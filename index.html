@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PermitFlow Onboarding — Phillips Edison & Co</title>
+<style>
+  :root {
+    --pf-purple: #1f1b4d;
+    --blue-50:  #eff6ff;
+    --blue-100: #dbeafe;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+    --purple-100: #ede9fe;
+    --purple-600: #7c3aed;
+    --purple-700: #6d28d9;
+    --gray-50:  #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-150: #ececf0;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --green-100: #dcfce7;
+    --green-500: #22c55e;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --teal-500: #14b8a6;
+    --red-100: #fee2e2;
+    --red-500: #ef4444;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --yellow-100: #fef3c7;
+    --yellow-500: #eab308;
+    --yellow-700: #b45309;
+    --amber-500: #f59e0b;
+    --amber-600: #d97706;
+    --pink-50: #fdf2f8;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+  .app { display: flex; min-height: 100vh; }
+  .gsidebar { width: 280px; flex-shrink: 0; background: #fff; border-right: 1px solid var(--gray-200); padding: 26px 20px; display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; }
+  .glogo-text { font-size: 18px; font-weight: 800; letter-spacing: -0.01em; color: var(--pf-purple); }
+  .glogo-text .flow { font-style: italic; font-weight: 700; }
+  .gcompany { margin-top: 14px; padding: 10px 12px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; font-size: 12px; color: var(--gray-600); display: flex; align-items: center; gap: 9px; }
+  .gcompany-logo { width: 26px; height: 26px; border-radius: 50%; background: #0a4d8c; color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 10px; flex-shrink: 0; }
+  .gcompany strong { color: var(--gray-900); display: block; font-weight: 600; }
+  .gprogress { margin-top: 22px; }
+  .gprogress-label { display: flex; justify-content: space-between; font-size: 11px; color: var(--gray-500); margin-bottom: 6px; letter-spacing: 0.02em; text-transform: uppercase; font-weight: 600; }
+  .gprogress-bar { height: 6px; background: var(--gray-100); border-radius: 999px; overflow: hidden; }
+  .gprogress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--blue-500), var(--blue-600)); transition: width .4s ease; }
+  .gsteps { list-style: none; padding: 0; margin: 20px 0 0; flex: 1; }
+  .gstep { display: flex; align-items: center; gap: 12px; padding: 9px 8px; border-radius: 8px; cursor: pointer; transition: background .15s; margin-bottom: 2px; }
+  .gstep:hover { background: var(--gray-50); }
+  .gstep.active { background: var(--blue-50); }
+  .gstep-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid var(--gray-300); background: #fff; flex-shrink: 0; display: grid; place-items: center; font-size: 11px; font-weight: 600; color: var(--gray-500); }
+  .gstep.active .gstep-dot, .gstep.completed .gstep-dot { background: var(--blue-600); border-color: var(--blue-600); color: #fff; }
+  .gstep.completed .gstep-dot::before { content: "✓"; font-size: 12px; }
+  .gstep.completed .gstep-dot .num { display: none; }
+  .gstep-label { font-size: 13.5px; color: var(--gray-700); font-weight: 500; }
+  .gstep.active .gstep-label { color: var(--blue-700); font-weight: 600; }
+  .gsupport { margin-top: 12px; padding-top: 16px; border-top: 1px solid var(--gray-200); font-size: 12.5px; color: var(--gray-500); }
+  .gsupport a { color: var(--blue-600); text-decoration: none; font-weight: 500; }
+  .gsupport a:hover { text-decoration: underline; }
+  .main { flex: 1; padding: 44px 48px 80px; max-width: 1280px; min-width: 0; }
+  .step { display: none; animation: fade .25s ease; }
+  .step.active { display: block; }
+  @keyframes fade { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  .eyebrow { font-size: 12px; font-weight: 700; color: var(--blue-600); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  h1.title { font-size: 28px; font-weight: 800; color: var(--gray-900); letter-spacing: -0.02em; margin: 0 0 8px 0; }
+  p.desc { font-size: 15px; color: var(--gray-600); margin: 0 0 24px 0; max-width: 760px; }
+  .browser { border-radius: 14px; overflow: hidden; border: 1px solid var(--gray-200); box-shadow: 0 20px 50px rgba(0,0,0,0.12); background: #fff; margin-bottom: 24px; }
+  .browser-chrome { background: #f3f3f7; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 8px; padding: 10px 14px; }
+  .bc-dot { width: 11px; height: 11px; border-radius: 50%; background: var(--gray-300); }
+  .bc-dot.r { background: #ff5f57; } .bc-dot.y { background: #febc2e; } .bc-dot.g { background: #28c840; }
+  .bc-url { margin-left: 14px; flex: 1; background: #fff; border: 1px solid var(--gray-200); border-radius: 6px; padding: 4px 10px; font-size: 12px; color: var(--gray-500); max-width: 380px; }
+  .ptopnav { display: flex; align-items: center; height: 56px; padding: 0 18px; border-bottom: 1px solid var(--gray-150); background: #fff; gap: 14px; }
+  .ptn-logo-text { font-size: 18px; font-weight: 800; color: var(--pf-purple); letter-spacing: -0.02em; }
+  .ptn-logo-text .flow { font-style: italic; font-weight: 700; }
+  .ptn-company { display: flex; align-items: center; gap: 8px; margin-left: 14px; padding: 5px 10px 5px 5px; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 13px; color: var(--gray-800); font-weight: 500; }
+  .ptn-company-logo { width: 24px; height: 24px; border-radius: 50%; background: #0a4d8c; color: #fff; display: grid; place-items: center; font-size: 9px; font-weight: 700; }
+  .ptn-caret { color: var(--gray-400); font-size: 10px; margin-left: 2px; }
+  .ptn-search { flex: 1; max-width: 520px; margin: 0 auto; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; padding: 6px 10px; display: flex; align-items: center; gap: 8px; color: var(--gray-400); font-size: 13px; }
+  .ptn-search .kbd { margin-left: auto; background: #fff; border: 1px solid var(--gray-200); border-radius: 5px; padding: 1px 6px; font-size: 11px; color: var(--gray-500); font-family: ui-monospace, monospace; }
+  .ptn-right { display: flex; align-items: center; gap: 12px; margin-left: auto; }
+  .ptn-customer { display: inline-flex; align-items: center; gap: 5px; background: #fff3e0; color: var(--amber-600); border: 1px solid #fdd9a4; padding: 5px 10px; border-radius: 999px; font-size: 12.5px; font-weight: 600; }
+  .ptn-bell { width: 32px; height: 32px; display: grid; place-items: center; border-radius: 8px; color: var(--gray-600); position: relative; cursor: pointer; }
+  .ptn-bell .badge99 { position: absolute; top: -2px; right: -4px; background: var(--red-500); color: #fff; border-radius: 999px; padding: 0px 5px; font-size: 9.5px; font-weight: 700; line-height: 1.4; }
+  .ptn-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--teal-500); color: #fff; display: grid; place-items: center; font-size: 12px; font-weight: 700; }
+  .pbody { display: flex; min-height: 600px; }
+  .psidebar { width: 76px; flex-shrink: 0; border-right: 1px solid var(--gray-150); background: #fff; padding: 14px 0; display: flex; flex-direction: column; gap: 2px; }
+  .pnav { display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 9px 4px; margin: 0 8px; border-radius: 8px; cursor: pointer; color: var(--gray-600); font-size: 10.5px; font-weight: 500; line-height: 1.2; text-align: center; }
+  .pnav svg { width: 20px; height: 20px; }
+  .pnav:hover { background: var(--gray-50); }
+  .pnav.active { background: var(--gray-100); color: var(--gray-900); }
+  .pnav-spacer { flex: 1; }
+  .pcontent { flex: 1; padding: 22px 24px; background: #fff; min-width: 0; }
+  .pcontent-main { flex: 1; padding: 22px 24px; background: #fff; min-width: 0; }
+  .ptabs { display: flex; border-bottom: 1px solid var(--gray-200); margin-bottom: 18px; gap: 4px; }
+  .ptab { padding: 9px 14px; font-size: 13.5px; font-weight: 500; color: var(--gray-500); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+  .ptab.active { color: var(--gray-900); font-weight: 600; border-bottom-color: var(--gray-900); }
+  .filter-groups { display: flex; flex-wrap: wrap; gap: 22px; margin-bottom: 18px; }
+  .fg { display: flex; flex-direction: column; gap: 6px; }
+  .fg-label { font-size: 10.5px; font-weight: 600; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.05em; margin-left: 2px; }
+  .fg-cards { display: flex; gap: 6px; }
+  .fcard { border: 1px solid var(--gray-200); border-radius: 8px; padding: 8px 14px; background: #fff; cursor: pointer; transition: all .15s; min-width: 82px; }
+  .fcard:hover { background: var(--gray-50); }
+  .fcard.active { border-color: var(--blue-600); background: var(--blue-50); }
+  .fcard-label { font-size: 11.5px; color: var(--gray-600); font-weight: 500; }
+  .fcard-count { font-size: 17px; font-weight: 700; color: var(--gray-900); margin-top: 2px; line-height: 1.1; }
+  .fcard.active .fcard-count { color: var(--blue-700); }
+  .toolbar { display: flex; align-items: center; gap: 10px; margin: 14px 0; }
+  .tb-search { flex: 1; max-width: 360px; border: 1px solid var(--gray-200); border-radius: 8px; background: #fff; padding: 7px 12px; display: flex; align-items: center; gap: 8px; color: var(--gray-400); font-size: 13px; }
+  .tb-btn { display: inline-flex; align-items: center; gap: 6px; border: 1px solid var(--gray-200); background: #fff; padding: 7px 12px; border-radius: 8px; font-size: 13px; color: var(--gray-700); font-weight: 500; cursor: pointer; }
+  .tb-right { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+  .tb-count { font-size: 13px; color: var(--gray-500); }
+  .tb-toggle { font-size: 12.5px; color: var(--gray-600); display: inline-flex; align-items: center; gap: 6px; }
+  .toggle-pill { width: 28px; height: 16px; background: var(--gray-200); border-radius: 999px; position: relative; }
+  .toggle-pill::after { content: ""; position: absolute; top: 2px; left: 2px; width: 12px; height: 12px; background: #fff; border-radius: 50%; }
+  .tb-iconbtn { width: 30px; height: 30px; border: 1px solid var(--gray-200); border-radius: 6px; display: grid; place-items: center; color: var(--gray-500); cursor: pointer; background: #fff; }
+  .btn-primary-sm { background: var(--blue-600); color: #fff; border: 1px solid var(--blue-600); border-radius: 8px; padding: 7px 14px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .filter-chip { display: inline-flex; align-items: center; gap: 6px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 999px; padding: 4px 6px 4px 10px; font-size: 12px; color: var(--gray-700); font-weight: 500; }
+  .filter-chip .label { color: var(--gray-500); margin-right: 4px; }
+  .filter-chip .x { width: 16px; height: 16px; background: var(--gray-200); color: var(--gray-600); border-radius: 50%; display: grid; place-items: center; font-size: 11px; cursor: pointer; }
+  .ptable { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .ptable thead th { text-align: left; font-weight: 600; font-size: 12px; color: var(--gray-500); padding: 10px 10px; border-bottom: 1px solid var(--gray-200); background: #fff; white-space: nowrap; }
+  .ptable thead th .sort { color: var(--gray-300); font-size: 9px; margin-left: 4px; }
+  .ptable tbody td { padding: 12px 10px; border-bottom: 1px solid var(--gray-100); color: var(--gray-700); vertical-align: middle; }
+  .ptable tbody tr:hover { background: var(--gray-50); }
+  .ptable tbody tr.blocked-row { background: var(--pink-50); }
+  .group-header td { background: var(--gray-50); font-weight: 600; color: var(--gray-700); font-size: 12.5px; padding: 8px 10px; }
+  .group-header .caret { display: inline-block; margin-right: 6px; color: var(--gray-500); }
+  .group-header .count { margin-left: 6px; color: var(--gray-500); font-weight: 500; }
+  .proj-cell { display: flex; align-items: flex-start; gap: 8px; min-width: 0; }
+  .proj-icon { flex-shrink: 0; margin-top: 1px; }
+  .proj-body { min-width: 0; }
+  .proj-name { color: var(--purple-700); font-weight: 500; text-decoration: underline; text-underline-offset: 2px; text-decoration-color: rgba(124,58,237,0.3); }
+  .proj-id { color: var(--gray-400); font-size: 11.5px; margin-top: 1px; }
+  .status-circle { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; display: inline-grid; place-items: center; position: relative; }
+  .sc-progress { background: #fff; border: 1.5px solid var(--amber-500); }
+  .sc-progress::before { content: ""; position: absolute; inset: -1.5px; border-radius: 50%; background: conic-gradient(var(--amber-500) 0% 35%, transparent 35% 100%); -webkit-mask: radial-gradient(circle, transparent 42%, #000 44%); mask: radial-gradient(circle, transparent 42%, #000 44%); }
+  .sc-done { background: var(--green-500); color: #fff; font-size: 9px; font-weight: 700; }
+  .sc-done::before { content: "✓"; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; line-height: 1.4; white-space: nowrap; background: var(--gray-100); color: var(--gray-700); }
+  .pill .dot { width: 9px; height: 9px; border-radius: 50%; border: 1.5px dashed var(--gray-400); flex-shrink: 0; }
+  .pill-notstarted { background: var(--gray-100); color: var(--gray-600); }
+  .pill-blocked { background: transparent; color: var(--red-600); font-weight: 600; padding-left: 2px; }
+  .pill-blocked::before { content: "⊘"; color: var(--red-600); font-size: 13px; line-height: 1; }
+  .pill-inprogress { background: #fef3c7; color: var(--yellow-700); }
+  .pill-inprogress::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--yellow-500); display: inline-block; }
+  .pill-created { background: var(--gray-100); color: var(--gray-600); }
+  .pill-created::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 1.5px dashed var(--gray-400); display: inline-block; }
+  .app-statuses { display: flex; gap: 12px; align-items: center; color: var(--gray-400); font-size: 12px; }
+  .app-statuses .col { display: flex; align-items: center; gap: 4px; min-width: 28px; }
+  .app-statuses .col svg { width: 14px; height: 14px; opacity: 0.7; }
+  .app-statuses .col.has { color: var(--gray-700); }
+  .app-statuses .col.has svg { opacity: 1; }
+  .av { width: 22px; height: 22px; border-radius: 50%; display: inline-grid; place-items: center; font-size: 9.5px; font-weight: 700; color: #fff; flex-shrink: 0; }
+  .av-gray { background: var(--gray-400); } .av-green { background: var(--green-500); } .av-teal { background: var(--teal-500); } .av-purple { background: var(--purple-600); }
+  .av-stack { display: inline-flex; }
+  .av-stack .av:not(:first-child) { margin-left: -6px; border: 2px solid #fff; }
+  .av-plus { width: 22px; height: 22px; border-radius: 50%; background: var(--gray-100); color: var(--gray-600); display: inline-grid; place-items: center; font-size: 10px; font-weight: 600; margin-left: -6px; border: 2px solid #fff; }
+  .av-badge { position: relative; }
+  .av-badge::after { content: "P"; position: absolute; top: -2px; right: -3px; background: var(--green-700); color: #fff; font-size: 7.5px; font-weight: 700; width: 11px; height: 11px; border-radius: 50%; display: grid; place-items: center; border: 1.5px solid #fff; }
+  .app-pill { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--gray-200); background: #fff; border-radius: 999px; padding: 2px 9px 2px 6px; font-size: 12px; color: var(--gray-700); font-weight: 500; }
+  .app-pill .check { width: 13px; height: 13px; border-radius: 50%; background: var(--green-500); color: #fff; display: grid; place-items: center; font-size: 8px; font-weight: 700; }
+  .app-pill.empty .check { background: #fff; border: 1.5px dashed var(--gray-300); color: transparent; }
+  .red-date { color: var(--red-600); font-weight: 500; }
+  .callouts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 4px; }
+  .callout { display: flex; gap: 12px; background: #fff; border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px 16px; }
+  .callout-letter { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--blue-600); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 12px; }
+  .callout-text strong { color: var(--gray-900); display: block; font-size: 13.5px; margin-bottom: 2px; }
+  .callout-text { font-size: 12.5px; color: var(--gray-600); }
+  .workflow-box { background: var(--blue-50); border-left: 3px solid var(--blue-600); padding: 14px 18px; border-radius: 6px; font-size: 13.5px; color: var(--gray-700); margin-top: 18px; }
+  .workflow-box strong { color: var(--blue-700); }
+  .proj-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .proj-header h2 { font-size: 19px; color: var(--gray-900); margin: 0; font-weight: 700; }
+  .proj-header .more { margin-left: auto; color: var(--gray-400); font-size: 18px; cursor: pointer; padding: 4px 8px; }
+  .right-rail { width: 320px; flex-shrink: 0; border-left: 1px solid var(--gray-150); padding: 18px; background: #fff; }
+  .rail-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .rail-title { font-size: 14px; font-weight: 600; color: var(--gray-900); }
+  .rail-empty { text-align: center; padding: 40px 16px; color: var(--gray-400); font-size: 13px; }
+  .workflow-section { border: 1px solid var(--gray-200); border-radius: 10px; overflow: hidden; margin-top: 8px; }
+  .workflow-section-header { padding: 8px 14px; background: var(--gray-50); color: var(--gray-600); font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+  .app-row { display: flex; align-items: center; padding: 10px 14px; border-top: 1px solid var(--gray-150); background: #fff; gap: 12px; }
+  .app-row .caret { color: var(--gray-400); font-size: 11px; }
+  .app-row .name { font-weight: 600; color: var(--gray-900); font-size: 14px; flex: 1; }
+  .app-row .meta { color: var(--gray-400); font-size: 12px; min-width: 60px; text-align: right; }
+  .timeline { display: flex; gap: 8px; padding: 14px; background: var(--gray-50); border-top: 1px solid var(--gray-150); overflow-x: auto; }
+  .tl-step { padding: 8px 12px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 11.5px; color: var(--gray-600); min-width: 110px; }
+  .tl-step.current { border-color: var(--blue-600); }
+  .tl-step .label { display: flex; align-items: center; gap: 5px; font-weight: 600; color: var(--gray-700); }
+  .tl-step .date { color: var(--gray-400); font-size: 11px; margin-top: 3px; }
+  .tl-step.current .label { color: var(--blue-700); }
+  .subtasks { background: #fff; border-top: 1px solid var(--gray-150); }
+  .breadcrumb { font-size: 13px; color: var(--gray-500); margin-bottom: 12px; }
+  .breadcrumb a { color: var(--gray-500); text-decoration: none; }
+  .breadcrumb .last { color: var(--gray-900); font-weight: 500; }
+  .breadcrumb .sep { margin: 0 6px; color: var(--gray-400); }
+  .task-detail h2 { font-size: 20px; color: var(--gray-900); margin: 0 0 4px 0; font-weight: 700; }
+  .task-created { font-size: 12px; color: var(--gray-400); margin-bottom: 18px; }
+  .task-meta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding-bottom: 18px; margin-bottom: 18px; border-bottom: 1px solid var(--gray-150); }
+  .tmg-item .label { font-size: 12px; color: var(--gray-500); font-weight: 500; margin-bottom: 4px; }
+  .tmg-item .value { font-size: 13px; color: var(--gray-900); font-weight: 500; display: flex; align-items: center; gap: 6px; }
+  .field-section { margin-bottom: 18px; }
+  .field-section h3 { font-size: 14px; color: var(--gray-900); margin: 0 0 8px 0; font-weight: 600; }
+  .field-section p { font-size: 13.5px; color: var(--gray-600); margin: 0; }
+  .upload-zone { border: 1.5px dashed var(--gray-300); background: var(--blue-50); border-radius: 10px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; color: var(--gray-700); font-size: 13px; }
+  .upload-zone .icon { width: 32px; height: 32px; background: #fff; border-radius: 6px; display: grid; place-items: center; color: var(--blue-600); flex-shrink: 0; }
+  .upload-zone .upl-link { color: var(--blue-600); font-weight: 600; }
+  .upload-zone .size { font-size: 11.5px; color: var(--gray-500); margin-top: 2px; }
+  .form-field { border: 1px solid var(--gray-200); border-radius: 10px; padding: 14px; }
+  .form-field label { display: block; font-size: 13px; color: var(--gray-700); font-weight: 500; margin-bottom: 6px; }
+  .form-field label .req { color: var(--red-500); }
+  .form-input { width: 100%; border: 1px solid var(--gray-200); border-radius: 8px; padding: 8px 10px; font-size: 13px; color: var(--gray-700); font-family: inherit; background: #fff; }
+  .complete-bar { margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--gray-150); display: flex; align-items: center; gap: 12px; justify-content: center; }
+  .btn-complete { background: var(--blue-600); color: #fff; border: none; padding: 9px 18px; border-radius: 8px; font-size: 13.5px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
+  .btn-complete:hover { background: var(--blue-700); }
+  .btn-complete:disabled { background: var(--green-600); cursor: default; }
+  .success-msg { display: none; padding: 8px 12px; background: var(--green-100); border: 1px solid #86efac; border-radius: 8px; color: var(--green-700); font-size: 13px; font-weight: 500; }
+  .success-msg.show { display: inline-block; }
+  .msg-list { display: flex; flex-direction: column; gap: 12px; }
+  .msg { display: flex; gap: 10px; }
+  .msg-av { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; color: #fff; display: grid; place-items: center; font-size: 10px; font-weight: 700; }
+  .msg-body { flex: 1; min-width: 0; }
+  .msg-name { font-size: 12.5px; font-weight: 600; color: var(--gray-900); }
+  .msg-time { font-size: 11px; color: var(--gray-400); margin-left: 6px; font-weight: 400; }
+  .msg-text { margin-top: 3px; font-size: 12.5px; color: var(--gray-700); background: var(--gray-50); padding: 8px 10px; border-radius: 8px; border: 1px solid var(--gray-150); }
+  .msg-input-row { display: flex; gap: 6px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--gray-150); }
+  .msg-input { flex: 1; padding: 8px 10px; border: 1px solid var(--gray-200); border-radius: 8px; font-size: 12.5px; font-family: inherit; outline: none; }
+  .msg-input:focus { border-color: var(--blue-500); }
+  .btn-send { background: var(--blue-600); color: #fff; border: none; padding: 6px 12px; border-radius: 8px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .checklist { list-style: none; padding: 0; margin: 0 0 18px 0; }
+  .checklist li { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border: 1px solid var(--gray-200); border-radius: 8px; margin-bottom: 6px; font-size: 13.5px; color: var(--gray-700); }
+  .check-icon { width: 18px; height: 18px; border-radius: 50%; background: var(--green-600); color: #fff; display: grid; place-items: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .check-icon::before { content: "✓"; }
+  .check-meta { color: var(--gray-400); font-size: 12px; margin-left: auto; }
+  .flow { display: flex; align-items: center; gap: 6px; margin: 20px 0; overflow-x: auto; padding: 4px 0; }
+  .flow-step { padding: 10px 14px; background: #fff; border: 1.5px solid var(--gray-200); border-radius: 8px; font-size: 13px; font-weight: 600; color: var(--gray-700); white-space: nowrap; }
+  .flow-step.done { background: var(--green-100); border-color: var(--green-600); color: var(--green-700); }
+  .flow-step.current { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-700); }
+  .flow-arrow { color: var(--gray-400); font-size: 18px; font-weight: 700; }
+  .help-box { margin-top: 24px; background: var(--blue-50); border: 1px solid var(--blue-100); border-radius: 12px; padding: 18px 22px; display: flex; gap: 14px; align-items: flex-start; }
+  .help-icon { width: 38px; height: 38px; background: var(--blue-600); color: #fff; border-radius: 10px; display: grid; place-items: center; font-size: 18px; font-weight: 700; flex-shrink: 0; }
+  .help-box h4 { margin: 0 0 4px 0; font-size: 15px; color: var(--gray-900); }
+  .help-box p { margin: 0; font-size: 14px; color: var(--gray-600); }
+  .help-box a { color: var(--blue-600); text-decoration: none; font-weight: 600; }
+  .nav-row { margin-top: 32px; padding-top: 22px; border-top: 1px solid var(--gray-200); display: flex; justify-content: space-between; align-items: center; }
+  .nav-row .right { display: flex; gap: 10px; }
+  .step-counter { font-size: 13px; color: var(--gray-500); font-weight: 500; }
+  .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 8px; font-size: 14px; font-weight: 600; border: 1px solid transparent; cursor: pointer; transition: all .15s; font-family: inherit; }
+  .btn-primary { background: var(--blue-600); color: #fff; }
+  .btn-primary:hover { background: var(--blue-700); }
+  .btn-secondary { background: #fff; color: var(--gray-700); border-color: var(--gray-300); }
+  .btn-secondary[disabled] { opacity: 0.5; cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: var(--gray-600); }
+  @media (max-width: 1100px) {
+    .gsidebar { width: 240px; }
+    .main { padding: 32px 24px 64px; }
+    .right-rail { display: none; }
+    .filter-groups { gap: 14px; }
+    .callouts { grid-template-columns: 1fr; }
+    .task-meta-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="gsidebar">
+    <div><div class="glogo-text">Permit<span class="flow">Flow</span></div></div>
+    <div class="gcompany">
+      <div class="gcompany-logo">PE</div>
+      <div><strong>Phillips Edison & Co</strong>Onboarding guide</div>
+    </div>
+    <div class="gprogress">
+      <div class="gprogress-label"><span>Progress</span><span id="progress-pct">0%</span></div>
+      <div class="gprogress-bar"><div class="gprogress-fill" id="progress-fill"></div></div>
+    </div>
+    <ul class="gsteps" id="step-list">
+      <li class="gstep" data-step="1"><div class="gstep-dot"><span class="num">1</span></div><div class="gstep-label">Projects overview</div></li>
+      <li class="gstep" data-step="2"><div class="gstep-dot"><span class="num">2</span></div><div class="gstep-label">Find your tasks</div></li>
+      <li class="gstep" data-step="3"><div class="gstep-dot"><span class="num">3</span></div><div class="gstep-label">Inside a project</div></li>
+      <li class="gstep" data-step="4"><div class="gstep-dot"><span class="num">4</span></div><div class="gstep-label">Open & complete a task</div></li>
+      <li class="gstep" data-step="5"><div class="gstep-dot"><span class="num">5</span></div><div class="gstep-label">What happens next</div></li>
+    </ul>
+    <div class="gsupport">Need help?<br/><a href="mailto:support@permitflow.com">support@permitflow.com</a></div>
+  </aside>
+
+  <main class="main">
+
+    <section class="step" data-step="1">
+      <div class="eyebrow">Step 1 of 5</div>
+      <h1 class="title">Projects overview</h1>
+      <p class="desc">When you log in to PermitFlow, head to <strong>Projects</strong> to see every site across every jurisdiction. Filter by ownership, project status, or application status to scope the list.</p>
+
+      <div class="browser">
+        <div class="browser-chrome">
+          <span class="bc-dot r"></span><span class="bc-dot y"></span><span class="bc-dot g"></span>
+          <div class="bc-url">app.permitflow.com/projects</div>
+        </div>
+        <div class="ptopnav">
+          <div><div class="ptn-logo-text">Permit<span class="flow">Flow</span></div></div>
+          <div class="ptn-company"><div class="ptn-company-logo">PE</div>Phillips Edison & Co<span class="ptn-caret">▾</span></div>
+          <div class="ptn-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search...<span class="kbd">⌘ K</span></div>
+          <div class="ptn-right">
+            <span class="ptn-customer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Customer view</span>
+            <div class="ptn-bell"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/></svg><span class="badge99">99+</span></div>
+            <div class="ptn-avatar">ES</div>
+          </div>
+        </div>
+        <div class="pbody">
+          <div class="psidebar">
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</div>
+            <div class="pnav active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-3V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 4h6v3H9z"/></svg>Projects</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tasks</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/></svg>Inbox</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Apps</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>Inspecti...</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Files</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/></svg>Directory</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>Billing</div>
+            <div class="pnav-spacer"></div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Feedback</div>
+          </div>
+          <div class="pcontent">
+            <div class="ptabs"><div class="ptab active">Default</div><div class="ptab">My custom views</div></div>
+            <div class="filter-groups">
+              <div class="fg"><div class="fg-label">Task ownership</div><div class="fg-cards">
+                <div class="fcard"><div class="fcard-label">PermitFlow</div><div class="fcard-count">5</div></div>
+                <div class="fcard"><div class="fcard-label">My team</div><div class="fcard-count">1</div></div>
+                <div class="fcard"><div class="fcard-label">Contacts</div><div class="fcard-count">2</div></div>
+              </div></div>
+              <div class="fg"><div class="fg-label">Project status</div><div class="fg-cards">
+                <div class="fcard active"><div class="fcard-label">All</div><div class="fcard-count">6</div></div>
+                <div class="fcard"><div class="fcard-label">In progress</div><div class="fcard-count">5</div></div>
+                <div class="fcard"><div class="fcard-label">Paused</div><div class="fcard-count">0</div></div>
+                <div class="fcard"><div class="fcard-label">Completed</div><div class="fcard-count">1</div></div>
+                <div class="fcard"><div class="fcard-label">Void</div><div class="fcard-count">0</div></div>
+              </div></div>
+              <div class="fg"><div class="fg-label">Application status</div><div class="fg-cards">
+                <div class="fcard"><div class="fcard-label">Unsubmitted</div><div class="fcard-count">5</div></div>
+                <div class="fcard"><div class="fcard-label">AHJ review</div><div class="fcard-count">1</div></div>
+              </div></div>
+            </div>
+            <div class="toolbar">
+              <div class="tb-search"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search by name, ID, municipality...</div>
+              <button class="tb-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg>Filter</button>
+              <div class="tb-right">
+                <span class="tb-count">6 projects</span>
+                <button class="btn-primary-sm">+ Create project</button>
+              </div>
+            </div>
+            <table class="ptable">
+              <thead>
+                <tr><th>Project <span class="sort">▲▼</span></th><th>Applications</th><th>Property owner</th><th>AHJ</th><th>Application statuses</th><th>ECD</th><th>Updated</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><div class="proj-cell"><span class="proj-icon"><span class="status-circle sc-progress"></span></span><div class="proj-body"><div class="proj-name">Boulder Fastframe @ Meadows on the Parkway - (Boulder, CO)</div><div class="proj-id">000000059208</div></div></div></td>
+                  <td><span class="app-pill empty"><span class="check">✓</span>0/1</span></td>
+                  <td><div>Brandon Townsley</div><div class="proj-id">4800 Baseline Road-Suite A106</div></td>
+                  <td></td>
+                  <td><div class="app-statuses"><div class="col has">1</div><div class="col">-</div><div class="col">-</div><div class="col">-</div></div></td>
+                  <td></td>
+                  <td>05/22/26</td>
+                </tr>
+                <tr>
+                  <td><div class="proj-cell"><span class="proj-icon"><span class="status-circle sc-done"></span></span><div class="proj-body"><div class="proj-name">[Pilot] 6575 North Decatur Boulevard - Suite A200</div><div class="proj-id">D335E4</div></div></div></td>
+                  <td><span class="app-pill"><span class="check">✓</span>2/2</span></td>
+                  <td><div>Phillips Edison & Co</div><div class="proj-id">6578 North Decatur Boulevard</div></td>
+                  <td>North Las Vegas, NV (City)</td>
+                  <td><div class="app-statuses"><div class="col">-</div><div class="col">-</div><div class="col">-</div><div class="col has">1</div></div></td>
+                  <td>10/25/24</td>
+                  <td>05/22/26</td>
+                </tr>
+                <tr>
+                  <td><div class="proj-cell"><span class="proj-icon"><span class="status-circle sc-progress"></span></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td><span class="app-pill empty"><span class="check">✓</span>0/5</span></td>
+                  <td><div>Jim Test</div><div class="proj-id">123 Example</div></td>
+                  <td>Huntington Beach, CA (City)</td>
+                  <td><div class="app-statuses"><div class="col has">4</div><div class="col has">1</div><div class="col">-</div><div class="col">-</div></div></td>
+                  <td>06/02/26</td>
+                  <td>05/15/26</td>
+                </tr>
+                <tr>
+                  <td><div class="proj-cell"><span class="proj-icon"><span class="status-circle sc-progress"></span></span><div class="proj-body"><div class="proj-name">The Sunny Fork @ Memorial at Kirkwood - (Houston, TX)</div><div class="proj-id">059382</div></div></div></td>
+                  <td><span class="app-pill empty"><span class="check">✓</span>0/1</span></td>
+                  <td><div>Scott Fox</div><div class="proj-id">14008 Memorial Drive A-Unit A148</div></td>
+                  <td></td>
+                  <td><div class="app-statuses"><div class="col has">1</div><div class="col">-</div><div class="col">-</div><div class="col">-</div></div></td>
+                  <td></td>
+                  <td>05/15/26</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="callouts">
+        <div class="callout"><div class="callout-letter">A</div><div class="callout-text"><strong>Filter cards</strong>Scope by task ownership, project status, or application status. Counts update live.</div></div>
+        <div class="callout"><div class="callout-letter">B</div><div class="callout-text"><strong>Project name & ID</strong>Click the underlined name to drill in. The smaller code is the PermitFlow project ID.</div></div>
+        <div class="callout"><div class="callout-letter">C</div><div class="callout-text"><strong>Applications pill</strong>"0/5" means zero of five applications are approved. Turns green when all are done.</div></div>
+        <div class="callout"><div class="callout-letter">D</div><div class="callout-text"><strong>Status icon</strong>Yellow for in progress, green check for completed.</div></div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 1 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" disabled>← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(2)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" data-step="2">
+      <div class="eyebrow">Step 2 of 5</div>
+      <h1 class="title">Find your tasks</h1>
+      <p class="desc">The <strong>Tasks</strong> view aggregates everything that needs attention across every project. Start your morning here. Blocked rows are pink-tinted — clear those first.</p>
+
+      <div class="browser">
+        <div class="browser-chrome">
+          <span class="bc-dot r"></span><span class="bc-dot y"></span><span class="bc-dot g"></span>
+          <div class="bc-url">app.permitflow.com/tasks</div>
+        </div>
+        <div class="ptopnav">
+          <div><div class="ptn-logo-text">Permit<span class="flow">Flow</span></div></div>
+          <div class="ptn-company"><div class="ptn-company-logo">PE</div>Phillips Edison & Co<span class="ptn-caret">▾</span></div>
+          <div class="ptn-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search...<span class="kbd">⌘ K</span></div>
+          <div class="ptn-right">
+            <span class="ptn-customer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Customer view</span>
+            <div class="ptn-bell"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/></svg><span class="badge99">99+</span></div>
+            <div class="ptn-avatar">ES</div>
+          </div>
+        </div>
+        <div class="pbody">
+          <div class="psidebar">
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-3V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 4h6v3H9z"/></svg>Projects</div>
+            <div class="pnav active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Tasks</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/></svg>Inbox</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Apps</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>Inspecti...</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Files</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/></svg>Directory</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>Billing</div>
+            <div class="pnav-spacer"></div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Feedback</div>
+          </div>
+          <div class="pcontent">
+            <div class="ptabs"><div class="ptab">My tasks</div><div class="ptab active">All tasks</div></div>
+            <div class="toolbar">
+              <div class="tb-search"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search by task name, description, or project</div>
+              <button class="tb-btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.5 10 19 14 21 14 12.5 22 3"/></svg>Filter (1)</button>
+              <div class="tb-right">
+                <span class="tb-toggle">Show completed tasks<span class="toggle-pill"></span></span>
+              </div>
+            </div>
+            <div style="margin-bottom: 14px;">
+              <span class="filter-chip"><span class="label">Assignee</span>Jim Test<span class="x">×</span></span>
+            </div>
+            <table class="ptable">
+              <thead>
+                <tr><th>Status</th><th>Task</th><th>Project</th><th>Due date</th><th>Assignees</th><th>Assignors</th><th>Updated</th></tr>
+              </thead>
+              <tbody>
+                <tr class="group-header"><td colspan="7"><span class="caret">▾</span>Not started <span class="count">20</span></td></tr>
+                <tr>
+                  <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                  <td>Confirm Transfer of Utilities to Tenant Name</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td class="red-date">9 days ago</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span><span class="av-plus">+1</span></td>
+                  <td>15d</td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                  <td>Scope of Work</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td class="red-date">9 days ago</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span><span class="av-plus">+1</span></td>
+                  <td>15d</td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                  <td>Rekey all doors</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td class="red-date">9 days ago</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span><span class="av-plus">+1</span></td>
+                  <td>15d</td>
+                </tr>
+                <tr>
+                  <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                  <td>Submit Tenant's Certificate of Insurance</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td class="red-date">7 days ago</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span></td>
+                  <td>15d</td>
+                </tr>
+                <tr class="blocked-row">
+                  <td><span class="pill pill-blocked">Blocked</span></td>
+                  <td>Permit Application Submitted</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td>Mon, Jun 15</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span><span class="av-plus">+1</span></td>
+                  <td>15d</td>
+                </tr>
+                <tr class="blocked-row">
+                  <td><span class="pill pill-blocked">Blocked</span></td>
+                  <td>Submit General Contractor Information</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td>Tue, Jun 16</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span><span class="av-plus">+1</span></td>
+                  <td>15d</td>
+                </tr>
+                <tr class="blocked-row">
+                  <td><span class="pill pill-blocked">Blocked</span></td>
+                  <td>Upload permits to DashComm</td>
+                  <td><div class="proj-cell"><span class="status-circle sc-progress" style="margin-top:3px;"></span><div class="proj-body"><div class="proj-name">123 Example</div><div class="proj-id">EDCE21</div></div></div></td>
+                  <td>Wed, Jun 17</td>
+                  <td><span class="av av-gray">JT</span></td>
+                  <td><span class="av-stack"><span class="av av-green av-badge">JN</span><span class="av av-teal">JS</span></span><span class="av-plus">+1</span></td>
+                  <td>15d</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="workflow-box"><strong>Your daily routine:</strong> Open Tasks → clear <strong>Blocked rows</strong> (pink) first — they're holding up applications. Then move through <strong>Not started</strong> tasks by due date. Red dates are overdue.</div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 2 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(1)">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(3)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" data-step="3">
+      <div class="eyebrow">Step 3 of 5</div>
+      <h1 class="title">Inside a project</h1>
+      <p class="desc">Click a project name to drill in. The project page shows every application, its current stage, and the tasks underneath. Use the right rail for project-level messages with your expediter.</p>
+
+      <div class="browser">
+        <div class="browser-chrome">
+          <span class="bc-dot r"></span><span class="bc-dot y"></span><span class="bc-dot g"></span>
+          <div class="bc-url">app.permitflow.com/projects/boulder-fastframe</div>
+        </div>
+        <div class="ptopnav">
+          <div><div class="ptn-logo-text">Permit<span class="flow">Flow</span></div></div>
+          <div class="ptn-company"><div class="ptn-company-logo">PE</div>Phillips Edison & Co<span class="ptn-caret">▾</span></div>
+          <div class="ptn-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search...<span class="kbd">⌘ K</span></div>
+          <div class="ptn-right">
+            <span class="ptn-customer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Customer view</span>
+            <div class="ptn-bell"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/></svg><span class="badge99">99+</span></div>
+            <div class="ptn-avatar">ES</div>
+          </div>
+        </div>
+        <div class="pbody">
+          <div class="psidebar">
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</div>
+            <div class="pnav active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-3V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 4h6v3H9z"/></svg>Projects</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>Tasks</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/></svg>Inbox</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Apps</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>Inspecti...</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Files</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/></svg>Directory</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>Billing</div>
+            <div class="pnav-spacer"></div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Feedback</div>
+          </div>
+          <div class="pcontent-main">
+            <div class="proj-header">
+              <h2>Boulder Fastframe @ Meadows on the Parkway</h2>
+              <span class="pill pill-inprogress">In progress</span>
+              <span class="more">⋯</span>
+            </div>
+            <div class="ptabs">
+              <div class="ptab active">Applications</div>
+              <div class="ptab">Tasks</div>
+              <div class="ptab">Files</div>
+              <div class="ptab">Directory</div>
+              <div class="ptab">Billing</div>
+            </div>
+            <div class="workflow-section">
+              <div class="workflow-section-header">Tenant Workflow</div>
+              <div class="app-row">
+                <span class="caret">▾</span>
+                <span class="name">Plans and Permits</span>
+                <span class="pill pill-created">Created <span style="margin-left:4px;color:var(--gray-400);">7d</span></span>
+                <span class="meta">1h</span>
+                <span class="meta">05/15/26</span>
+              </div>
+              <div class="timeline">
+                <div class="tl-step current"><div class="label"><span class="status-circle sc-progress"></span> Created</div><div class="date">05/15</div></div>
+                <div class="tl-step"><div class="label">Submitted</div><div class="date">—</div></div>
+                <div class="tl-step"><div class="label">Under review</div><div class="date">—</div></div>
+                <div class="tl-step"><div class="label">Approved</div><div class="date">—</div></div>
+                <div class="tl-step"><div class="label">Issued</div><div class="date">—</div></div>
+              </div>
+              <div class="subtasks">
+                <table class="ptable">
+                  <thead><tr><th>Status</th><th>Task</th><th>Required for</th><th>Due date</th><th>Assignees</th><th>Updated</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                      <td>Welcome Email</td>
+                      <td><span style="color:var(--purple-700);text-decoration:underline;">Submission</span></td>
+                      <td class="red-date">4 days ago</td>
+                      <td><span class="av av-purple">JS</span></td>
+                      <td>1h</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                      <td>Engage Architect</td>
+                      <td><span style="color:var(--purple-700);text-decoration:underline;">Submission</span></td>
+                      <td class="red-date">4 days ago</td>
+                      <td><span class="av av-gray">BT</span></td>
+                      <td>1h</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                      <td>Submit signage specs/renderings via DashComm</td>
+                      <td><span style="color:var(--purple-700);text-decoration:underline;">Submission</span></td>
+                      <td class="red-date">4 days ago</td>
+                      <td><span class="av av-gray">BT</span></td>
+                      <td>1h</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                      <td>Scope of Work</td>
+                      <td><span style="color:var(--purple-700);text-decoration:underline;">Submission</span></td>
+                      <td class="red-date">4 days ago</td>
+                      <td><span class="av av-green av-badge">JN</span></td>
+                      <td>7d</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                      <td>Confirm Possesion</td>
+                      <td><span style="color:var(--purple-700);text-decoration:underline;">Submission</span></td>
+                      <td class="red-date">4 days ago</td>
+                      <td><span class="av av-purple">JS</span></td>
+                      <td>1h</td>
+                    </tr>
+                    <tr>
+                      <td><span class="pill pill-notstarted"><span class="dot"></span>Not started</span></td>
+                      <td>Confirm Tenant Opening Date</td>
+                      <td><span style="color:var(--purple-700);text-decoration:underline;">Submission</span></td>
+                      <td class="red-date">4 days ago</td>
+                      <td><span class="av av-green av-badge">JN</span></td>
+                      <td>7d</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class="right-rail">
+            <div class="rail-header"><div class="rail-title">Messages</div><div style="color:var(--gray-400);font-size:12px;">»</div></div>
+            <div class="rail-empty">This project has no active messages.<br/>Start one below.</div>
+            <div class="msg-input-row">
+              <input type="text" class="msg-input" placeholder="Create a new thread" disabled />
+              <button class="btn-send">↑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callouts">
+        <div class="callout"><div class="callout-letter">A</div><div class="callout-text"><strong>Applications tab</strong>Every permit application on this project. Each has its own workflow lane and task list.</div></div>
+        <div class="callout"><div class="callout-letter">B</div><div class="callout-text"><strong>Timeline</strong>The blue-outlined card is where the application is now. Others light up as it progresses.</div></div>
+        <div class="callout"><div class="callout-letter">C</div><div class="callout-text"><strong>Task table</strong>"Required for" tells you which milestone the task is blocking (e.g. Submission).</div></div>
+        <div class="callout"><div class="callout-letter">D</div><div class="callout-text"><strong>Messages rail</strong>Project-level conversation with your expediter for cross-cutting issues.</div></div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 3 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(2)">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(4)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" data-step="4">
+      <div class="eyebrow">Step 4 of 5</div>
+      <h1 class="title">Open & complete a task</h1>
+      <p class="desc">Click any task to open its detail panel. Fill in required fields, drop any files, and use the right-side Messages thread to talk with PermitFlow. When done, hit <strong>Mark as complete</strong>.</p>
+
+      <div class="browser">
+        <div class="browser-chrome">
+          <span class="bc-dot r"></span><span class="bc-dot y"></span><span class="bc-dot g"></span>
+          <div class="bc-url">app.permitflow.com/.../confirm-tenant-opening-date</div>
+        </div>
+        <div class="ptopnav">
+          <div><div class="ptn-logo-text">Permit<span class="flow">Flow</span></div></div>
+          <div class="ptn-company"><div class="ptn-company-logo">PE</div>Phillips Edison & Co<span class="ptn-caret">▾</span></div>
+          <div class="ptn-search"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>Search...<span class="kbd">⌘ K</span></div>
+          <div class="ptn-right">
+            <span class="ptn-customer"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Customer view</span>
+            <div class="ptn-bell"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/></svg><span class="badge99">99+</span></div>
+            <div class="ptn-avatar">ES</div>
+          </div>
+        </div>
+        <div class="pbody">
+          <div class="psidebar">
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Home</div>
+            <div class="pnav active"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7h-3V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v3H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2zM9 4h6v3H9z"/></svg>Projects</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/></svg>Tasks</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/></svg>Inbox</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Apps</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg>Inspecti...</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>Files</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="7" r="4"/></svg>Directory</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/></svg>Billing</div>
+            <div class="pnav-spacer"></div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/></svg>Settings</div>
+            <div class="pnav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>Feedback</div>
+          </div>
+          <div class="pcontent-main">
+            <div class="breadcrumb">
+              <a href="#">Projects</a><span class="sep">/</span>
+              <a href="#">The Sunny Fork @ Memorial at Kirkwood</a><span class="sep">/</span>
+              <a href="#">Plans and Permits</a><span class="sep">/</span>
+              <span class="last">Confirm Tenant Opening Date</span>
+            </div>
+            <div class="task-detail">
+              <h2>Confirm Tenant Opening Date</h2>
+              <div class="task-created">Created Fri, May 15</div>
+              <div class="task-meta-grid">
+                <div class="tmg-item"><div class="label">Status</div><div class="value"><span class="pill pill-notstarted"><span class="dot"></span>Not started</span> <span style="color:var(--gray-400);">▾</span></div></div>
+                <div class="tmg-item"><div class="label">Assignees</div><div class="value"><span class="av av-green av-badge">JN</span></div></div>
+                <div class="tmg-item"><div class="label">Assignors</div><div class="value"><span class="av av-green av-badge">JN</span></div></div>
+                <div class="tmg-item"><div class="label">Due date</div><div class="value red-date">📅 Mon, May 18</div></div>
+              </div>
+              <div class="field-section">
+                <h3>Description</h3>
+                <p>Please enter the opening date for this tenant and mark the task as complete. Your PermitFlow expediter uses this to set the milestone schedule.</p>
+              </div>
+              <div class="field-section">
+                <h3>Attachments</h3>
+                <div class="upload-zone">
+                  <div class="icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+                  <div>
+                    <div>Drop your file here or <span class="upl-link">click to upload</span></div>
+                    <div class="size">Up to 2.0 GB</div>
+                  </div>
+                </div>
+              </div>
+              <div class="field-section">
+                <h3>Task</h3>
+                <div class="form-field">
+                  <label>Opening Date <span class="req">*</span></label>
+                  <input type="date" class="form-input" />
+                </div>
+              </div>
+              <div class="complete-bar">
+                <button class="btn-complete" id="complete-btn-4" onclick="markComplete(4)">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                  Mark as complete
+                </button>
+                <span class="success-msg" id="success-4">Task marked complete. Your expediter has been notified.</span>
+              </div>
+            </div>
+          </div>
+          <div class="right-rail">
+            <div class="rail-header"><div class="rail-title">Messages</div><div style="color:var(--gray-400);font-size:12px;">»</div></div>
+            <div class="msg-list">
+              <div class="msg">
+                <div class="msg-av" style="background: var(--green-500)">JN</div>
+                <div class="msg-body">
+                  <div><span class="msg-name">Jordan Nguyen</span><span class="msg-time">May 16, 9:14 AM</span></div>
+                  <div class="msg-text">Hi Eric — let me know once you confirm the opening date with the tenant and I'll line up the inspection window.</div>
+                </div>
+              </div>
+              <div class="msg">
+                <div class="msg-av" style="background: var(--teal-500)">ES</div>
+                <div class="msg-body">
+                  <div><span class="msg-name">Eric Strauchen</span><span class="msg-time">Today, 10:02 AM</span></div>
+                  <div class="msg-text">Got it — checking with the tenant now. Will update by EOD.</div>
+                </div>
+              </div>
+            </div>
+            <div class="msg-input-row">
+              <input type="text" class="msg-input" id="msg-input-4" placeholder="Create a new thread" />
+              <button class="btn-send" onclick="sendMessage(4)">↑</button>
+            </div>
+            <div style="margin-top:8px;"><span class="success-msg" id="sent-4">Sent!</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callouts">
+        <div class="callout"><div class="callout-letter">A</div><div class="callout-text"><strong>Breadcrumb</strong>Always shows where you are. Click any segment to jump back up.</div></div>
+        <div class="callout"><div class="callout-letter">B</div><div class="callout-text"><strong>Required fields</strong>Anything with a red asterisk must be filled before marking complete.</div></div>
+        <div class="callout"><div class="callout-letter">C</div><div class="callout-text"><strong>Attachments</strong>Drag a PDF or image onto the dropzone, or click to browse.</div></div>
+        <div class="callout"><div class="callout-letter">D</div><div class="callout-text"><strong>Messages rail</strong>Conversation scoped to this task only — different from project-level messages.</div></div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 4 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(3)">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(5)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="step" data-step="5">
+      <div class="eyebrow">Step 5 of 5</div>
+      <h1 class="title">What happens next</h1>
+      <p class="desc">Once you've completed your tasks, PermitFlow takes it from here. Here's what a finished task looks like and the milestones that follow.</p>
+
+      <div class="browser">
+        <div class="browser-chrome">
+          <span class="bc-dot r"></span><span class="bc-dot y"></span><span class="bc-dot g"></span>
+          <div class="bc-url">app.permitflow.com/.../upload-site-plan</div>
+        </div>
+        <div style="padding: 22px 28px;">
+          <div class="breadcrumb">
+            <a href="#">Projects</a><span class="sep">/</span>
+            <a href="#">123 Example</a><span class="sep">/</span>
+            <a href="#">Plans and Permits</a><span class="sep">/</span>
+            <span class="last">Upload signed site plan</span>
+          </div>
+          <h2 style="margin: 0 0 4px 0; font-size: 18px; color: var(--gray-900);">Upload signed site plan</h2>
+          <div class="task-created" style="margin-bottom: 16px;">Uploaded documents</div>
+          <ul class="checklist">
+            <li><span class="check-icon"></span> site-plan-rev3-sealed.pdf <span class="check-meta">2.4 MB</span></li>
+            <li><span class="check-icon"></span> survey-2026-04.pdf <span class="check-meta">1.1 MB</span></li>
+            <li><span class="check-icon"></span> owner-auth-signed.pdf <span class="check-meta">320 KB</span></li>
+            <li><span class="check-icon"></span> parking-calc-update.pdf <span class="check-meta">180 KB</span></li>
+          </ul>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom: 24px;">
+            <button class="btn-complete" id="complete-btn-5" onclick="markComplete(5)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+              Mark as complete
+            </button>
+            <span class="success-msg" id="success-5">Task complete. Application moving to "Submitted".</span>
+          </div>
+          <h3 style="font-size:13px; color:var(--gray-500); margin:18px 0 8px; font-weight:600; text-transform: uppercase; letter-spacing: 0.04em;">Application workflow</h3>
+          <div class="flow">
+            <div class="flow-step done">Created</div><span class="flow-arrow">›</span>
+            <div class="flow-step done">Submitted</div><span class="flow-arrow">›</span>
+            <div class="flow-step current">Under review</div><span class="flow-arrow">›</span>
+            <div class="flow-step">Corrections</div><span class="flow-arrow">›</span>
+            <div class="flow-step">Approved</div><span class="flow-arrow">›</span>
+            <div class="flow-step">Issued</div>
+          </div>
+          <p style="font-size:13px; color:var(--gray-500); margin:0;">Your application is with the AHJ. We'll ping you in Messages the moment they respond.</p>
+        </div>
+      </div>
+
+      <div class="help-box">
+        <div class="help-icon">?</div>
+        <div>
+          <h4>Need a hand?</h4>
+          <p>Your dedicated expediter and the PermitFlow team are one click away. Email <a href="mailto:support@permitflow.com">support@permitflow.com</a> anytime — we typically respond within an hour during business hours.</p>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 5 of 5 — You're done!</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(4)">← Previous</button>
+          <button class="btn btn-ghost" onclick="restartGuide()">↺ Restart guide</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const TOTAL_STEPS = 5;
+  let currentStep = 1;
+
+  function goToStep(n) {
+    if (n < 1 || n > TOTAL_STEPS) return;
+    currentStep = n;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function render() {
+    document.querySelectorAll('.step').forEach(el => {
+      el.classList.toggle('active', Number(el.dataset.step) === currentStep);
+    });
+    document.querySelectorAll('.gstep').forEach(el => {
+      const s = Number(el.dataset.step);
+      el.classList.toggle('active', s === currentStep);
+      el.classList.toggle('completed', s < currentStep);
+    });
+    const pct = Math.round(((currentStep - 1) / (TOTAL_STEPS - 1)) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+
+  function markComplete(stepNum) {
+    const btn = document.getElementById('complete-btn-' + stepNum);
+    const msg = document.getElementById('success-' + stepNum);
+    if (!btn || !msg) return;
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Completed';
+    msg.classList.add('show');
+  }
+
+  function sendMessage(stepNum) {
+    const input = document.getElementById('msg-input-' + stepNum);
+    const msg = document.getElementById('sent-' + stepNum);
+    if (input) input.value = '';
+    if (msg) { msg.classList.add('show'); setTimeout(() => msg.classList.remove('show'), 2500); }
+  }
+
+  function restartGuide() {
+    [4, 5].forEach(s => {
+      const btn = document.getElementById('complete-btn-' + s);
+      const msg = document.getElementById('success-' + s);
+      if (btn) { btn.disabled = false; btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg> Mark as complete'; }
+      if (msg) msg.classList.remove('show');
+    });
+    const sent4 = document.getElementById('sent-4');
+    if (sent4) sent4.classList.remove('show');
+    goToStep(1);
+  }
+
+  document.querySelectorAll('.gstep').forEach(el => {
+    el.addEventListener('click', () => goToStep(Number(el.dataset.step)));
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'msg-input-4') {
+      sendMessage(4);
+    }
+  });
+
+  render();
+</script>
+</body>
+</html>
