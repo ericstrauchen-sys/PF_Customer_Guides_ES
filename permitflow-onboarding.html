@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>PermitFlow Onboarding — Philips Edison & Co</title>
+<style>
+  :root {
+    --blue-50:  #eff6ff;
+    --blue-100: #dbeafe;
+    --blue-500: #3b82f6;
+    --blue-600: #2563eb;
+    --blue-700: #1d4ed8;
+    --gray-50:  #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    --green-100: #dcfce7;
+    --green-600: #16a34a;
+    --green-700: #15803d;
+    --red-50: #fef2f2;
+    --red-100: #fee2e2;
+    --red-600: #dc2626;
+    --red-700: #b91c1c;
+    --yellow-100: #fef3c7;
+    --yellow-700: #b45309;
+    --pink-50: #fdf2f8;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,0.06);
+    --shadow-lg: 0 12px 32px rgba(0,0,0,0.08);
+    --radius: 10px;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-800);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  .app {
+    display: flex;
+    min-height: 100vh;
+  }
+
+  /* ===== Sidebar ===== */
+  .sidebar {
+    width: 300px;
+    flex-shrink: 0;
+    background: #ffffff;
+    border-right: 1px solid var(--gray-200);
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .logo-mark {
+    width: 32px;
+    height: 32px;
+    background: var(--blue-600);
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+  }
+  .logo-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--gray-900);
+    letter-spacing: -0.01em;
+  }
+  .company {
+    margin-top: 14px;
+    padding: 10px 12px;
+    background: var(--gray-50);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 12px;
+    color: var(--gray-600);
+  }
+  .company strong { color: var(--gray-900); font-weight: 600; display: block; }
+
+  .progress-wrap {
+    margin-top: 22px;
+    margin-bottom: 8px;
+  }
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--gray-500);
+    margin-bottom: 6px;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .progress-bar {
+    height: 6px;
+    background: var(--gray-100);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--blue-500), var(--blue-600));
+    width: 0%;
+    transition: width 0.4s ease;
+  }
+
+  .step-list {
+    list-style: none;
+    padding: 0;
+    margin: 18px 0 0 0;
+    flex: 1;
+  }
+  .step-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.15s;
+    margin-bottom: 2px;
+  }
+  .step-item:hover { background: var(--gray-50); }
+  .step-item.active { background: var(--blue-50); }
+  .step-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-300);
+    background: #fff;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--gray-500);
+  }
+  .step-item.active .step-dot {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: #fff;
+  }
+  .step-item.completed .step-dot {
+    background: var(--blue-600);
+    border-color: var(--blue-600);
+    color: #fff;
+  }
+  .step-item.completed .step-dot::before { content: "✓"; font-size: 12px; }
+  .step-item.completed .step-dot .num { display: none; }
+  .step-label {
+    font-size: 13.5px;
+    color: var(--gray-700);
+    font-weight: 500;
+  }
+  .step-item.active .step-label { color: var(--blue-700); font-weight: 600; }
+
+  .support {
+    margin-top: 12px;
+    padding-top: 16px;
+    border-top: 1px solid var(--gray-200);
+    font-size: 12.5px;
+    color: var(--gray-500);
+  }
+  .support a {
+    color: var(--blue-600);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .support a:hover { text-decoration: underline; }
+
+  /* ===== Main content ===== */
+  .main {
+    flex: 1;
+    padding: 48px 56px 80px;
+    max-width: 1100px;
+  }
+  .step { display: none; animation: fade 0.25s ease; }
+  .step.active { display: block; }
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue-600);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+  h1.step-title {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--gray-900);
+    letter-spacing: -0.02em;
+    margin: 0 0 10px 0;
+  }
+  p.step-desc {
+    font-size: 15.5px;
+    color: var(--gray-600);
+    margin: 0 0 28px 0;
+    max-width: 720px;
+  }
+
+  /* Mockup container */
+  .mockup {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 14px;
+    box-shadow: var(--shadow-md);
+    padding: 22px;
+    margin-bottom: 24px;
+  }
+  .mockup-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .mockup-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--gray-200);
+  }
+  .mockup-dot.r { background: #fca5a5; }
+  .mockup-dot.y { background: #fcd34d; }
+  .mockup-dot.g { background: #86efac; }
+  .mockup-title {
+    margin-left: 12px;
+    font-size: 13px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+
+  /* Filter cards */
+  .filter-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+    margin-bottom: 18px;
+  }
+  .filter-card {
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 12px 14px;
+    background: #fff;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-card.active {
+    border-color: var(--blue-600);
+    background: var(--blue-50);
+  }
+  .filter-card-label {
+    font-size: 12px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+  .filter-card-count {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-top: 4px;
+  }
+  .filter-card.active .filter-card-count { color: var(--blue-700); }
+
+  /* Tables */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13.5px;
+  }
+  .data-table thead th {
+    text-align: left;
+    font-weight: 600;
+    font-size: 11.5px;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--gray-200);
+    background: var(--gray-50);
+  }
+  .data-table tbody td {
+    padding: 14px 12px;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-700);
+    vertical-align: middle;
+  }
+  .data-table tbody tr:hover { background: var(--gray-50); }
+  .data-table tbody tr.blocked-row {
+    background: var(--pink-50);
+  }
+  .data-table tbody tr.blocked-row:hover { background: #fce7f3; }
+
+  .project-name {
+    font-weight: 600;
+    color: var(--gray-900);
+  }
+  .project-sub {
+    color: var(--gray-500);
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  /* Status badges */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 600;
+    line-height: 1.4;
+    white-space: nowrap;
+  }
+  .badge + .badge { margin-left: 4px; }
+  .badge-red    { background: var(--red-100);    color: var(--red-700); }
+  .badge-yellow { background: var(--yellow-100); color: var(--yellow-700); }
+  .badge-blue   { background: var(--blue-100);   color: var(--blue-700); }
+  .badge-green  { background: var(--green-100);  color: var(--green-700); }
+  .badge-gray   { background: var(--gray-100);   color: var(--gray-600); }
+
+  /* Callouts A–D */
+  .callouts {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 8px;
+  }
+  .callout {
+    display: flex;
+    gap: 12px;
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .callout-letter {
+    flex-shrink: 0;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--blue-600);
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .callout-text strong { color: var(--gray-900); display: block; font-size: 14px; margin-bottom: 2px; }
+  .callout-text { font-size: 13px; color: var(--gray-600); }
+
+  /* Task icon */
+  .status-cell {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    color: var(--gray-700);
+  }
+  .status-icon {
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    border: 2px solid var(--gray-400);
+    flex-shrink: 0;
+    display: grid; place-items: center;
+    background: #fff;
+  }
+  .status-icon.blocked {
+    border-color: var(--red-600);
+    background: #fff;
+    color: var(--red-600);
+    font-weight: 700;
+    font-size: 11px;
+  }
+  .status-icon.blocked::before { content: "⊘"; }
+
+  /* Task detail panel */
+  .breadcrumb {
+    font-size: 13px;
+    color: var(--gray-500);
+    margin-bottom: 8px;
+  }
+  .breadcrumb a { color: var(--blue-600); text-decoration: none; }
+  .breadcrumb-sep { margin: 0 6px; color: var(--gray-400); }
+
+  .task-detail-header h2 {
+    font-size: 22px;
+    margin: 0 0 12px 0;
+    color: var(--gray-900);
+    font-weight: 700;
+  }
+  .task-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .task-meta-item {
+    font-size: 13px;
+  }
+  .task-meta-label {
+    color: var(--gray-500);
+    font-weight: 500;
+    margin-bottom: 3px;
+  }
+  .task-meta-value {
+    color: var(--gray-900);
+    font-weight: 600;
+  }
+  .avatar {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--blue-600);
+    color: #fff;
+    display: inline-grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 4px;
+  }
+  .avatar.alt { background: #a78bfa; }
+
+  .task-section h3 {
+    font-size: 14px;
+    color: var(--gray-700);
+    margin: 18px 0 8px;
+    font-weight: 600;
+  }
+  .task-doc-list {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--gray-700);
+    font-size: 14px;
+  }
+  .task-doc-list li { margin-bottom: 4px; }
+
+  /* Buttons */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+  .btn-primary {
+    background: var(--blue-600);
+    color: #fff;
+  }
+  .btn-primary:hover { background: var(--blue-700); }
+  .btn-primary:disabled { background: var(--green-600); cursor: default; }
+  .btn-secondary {
+    background: #fff;
+    color: var(--gray-700);
+    border-color: var(--gray-300);
+  }
+  .btn-secondary:hover { background: var(--gray-50); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--gray-600);
+  }
+  .btn-ghost:hover { background: var(--gray-100); }
+
+  .success-msg {
+    display: none;
+    margin-top: 14px;
+    padding: 10px 14px;
+    background: var(--green-100);
+    border: 1px solid #86efac;
+    border-radius: 8px;
+    color: var(--green-700);
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .success-msg.show { display: inline-block; }
+
+  /* Messages */
+  .messages {
+    margin-top: 24px;
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .messages-header {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-700);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .message {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .msg-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--blue-600);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+  .msg-avatar.alt { background: #f59e0b; }
+  .msg-body { flex: 1; }
+  .msg-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-900);
+  }
+  .msg-time { font-size: 11.5px; color: var(--gray-500); margin-left: 6px; font-weight: 400; }
+  .msg-text {
+    margin-top: 3px;
+    font-size: 13.5px;
+    color: var(--gray-700);
+    background: var(--gray-50);
+    padding: 10px 12px;
+    border-radius: 8px;
+    display: inline-block;
+  }
+
+  .msg-input-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--gray-100);
+  }
+  .msg-input {
+    flex: 1;
+    padding: 9px 12px;
+    border: 1px solid var(--gray-300);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    outline: none;
+    transition: border 0.15s;
+  }
+  .msg-input:focus { border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(59,130,246,0.15); }
+
+  /* Split panel */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .split .panel {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: 12px;
+    padding: 18px;
+  }
+  .panel-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gray-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+
+  /* Checklist */
+  .checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 18px 0;
+  }
+  .checklist li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    margin-bottom: 6px;
+    font-size: 14px;
+    color: var(--gray-700);
+  }
+  .check-icon {
+    width: 18px; height: 18px;
+    border-radius: 50%;
+    background: var(--green-600);
+    color: #fff;
+    display: grid; place-items: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .check-icon::before { content: "✓"; }
+
+  /* Flow diagram */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 20px 0;
+    overflow-x: auto;
+    padding: 4px 0;
+  }
+  .flow-step {
+    padding: 10px 14px;
+    background: #fff;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gray-700);
+    white-space: nowrap;
+  }
+  .flow-step.done { background: var(--green-100); border-color: var(--green-600); color: var(--green-700); }
+  .flow-step.current { background: var(--blue-50); border-color: var(--blue-600); color: var(--blue-700); }
+  .flow-arrow { color: var(--gray-400); font-size: 18px; font-weight: 700; }
+
+  /* Help callout */
+  .help-box {
+    margin-top: 24px;
+    background: var(--blue-50);
+    border: 1px solid var(--blue-100);
+    border-radius: 12px;
+    padding: 18px 22px;
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+  .help-icon {
+    width: 38px; height: 38px;
+    background: var(--blue-600);
+    color: #fff;
+    border-radius: 10px;
+    display: grid; place-items: center;
+    font-size: 18px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .help-box h4 {
+    margin: 0 0 4px 0;
+    font-size: 15px;
+    color: var(--gray-900);
+  }
+  .help-box p {
+    margin: 0;
+    font-size: 14px;
+    color: var(--gray-600);
+  }
+  .help-box a { color: var(--blue-600); text-decoration: none; font-weight: 600; }
+  .help-box a:hover { text-decoration: underline; }
+
+  /* Nav buttons */
+  .nav-row {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 1px solid var(--gray-200);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .nav-row .right { display: flex; gap: 10px; }
+  .step-counter {
+    font-size: 13px;
+    color: var(--gray-500);
+    font-weight: 500;
+  }
+
+  /* Daily workflow box */
+  .workflow-box {
+    background: var(--blue-50);
+    border-left: 3px solid var(--blue-600);
+    padding: 14px 18px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--gray-700);
+    margin-top: 18px;
+  }
+  .workflow-box strong { color: var(--blue-700); }
+
+  @media (max-width: 900px) {
+    .sidebar { width: 240px; }
+    .main { padding: 32px 24px 64px; }
+    .filter-row { grid-template-columns: repeat(3, 1fr); }
+    .callouts { grid-template-columns: 1fr; }
+    .split { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">P</div>
+      <div class="logo-name">PermitFlow</div>
+    </div>
+    <div class="company">
+      <strong>Philips Edison & Co</strong>
+      Onboarding guide
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-label">
+        <span>Progress</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    </div>
+
+    <ul class="step-list" id="step-list">
+      <li class="step-item" data-step="1"><div class="step-dot"><span class="num">1</span></div><div class="step-label">Dashboard overview</div></li>
+      <li class="step-item" data-step="2"><div class="step-dot"><span class="num">2</span></div><div class="step-label">Find your tasks</div></li>
+      <li class="step-item" data-step="3"><div class="step-dot"><span class="num">3</span></div><div class="step-label">Open a task</div></li>
+      <li class="step-item" data-step="4"><div class="step-dot"><span class="num">4</span></div><div class="step-label">Messages panel</div></li>
+      <li class="step-item" data-step="5"><div class="step-dot"><span class="num">5</span></div><div class="step-label">Mark tasks complete</div></li>
+    </ul>
+
+    <div class="support">
+      Need help?<br/>
+      <a href="mailto:support@permitflow.com">support@permitflow.com</a>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+
+    <!-- ===== STEP 1 ===== -->
+    <section class="step" data-step="1">
+      <div class="step-eyebrow">Step 1 of 5</div>
+      <h1 class="step-title">Dashboard overview</h1>
+      <p class="step-desc">When you log in to PermitFlow, you'll land on the dashboard — your home base for every project across every jurisdiction. Here's how to read it.</p>
+
+      <div class="mockup">
+        <div class="mockup-header">
+          <span class="mockup-dot r"></span>
+          <span class="mockup-dot y"></span>
+          <span class="mockup-dot g"></span>
+          <span class="mockup-title">permitflow.com / projects</span>
+        </div>
+
+        <div class="filter-row">
+          <div class="filter-card active"><div class="filter-card-label">All</div><div class="filter-card-count">47</div></div>
+          <div class="filter-card"><div class="filter-card-label">In Progress</div><div class="filter-card-count">28</div></div>
+          <div class="filter-card"><div class="filter-card-label">Paused</div><div class="filter-card-count">4</div></div>
+          <div class="filter-card"><div class="filter-card-label">Completed</div><div class="filter-card-count">12</div></div>
+          <div class="filter-card"><div class="filter-card-label">Void</div><div class="filter-card-count">2</div></div>
+          <div class="filter-card"><div class="filter-card-label">Unsubmit</div><div class="filter-card-count">1</div></div>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Apps</th>
+              <th>AHJ</th>
+              <th>App statuses</th>
+              <th>ECD</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="project-name">Cypress Shopping Center</div>
+                <div class="project-sub">8420 Westheimer Rd, Houston, TX</div>
+              </td>
+              <td>3</td>
+              <td>City of Houston</td>
+              <td>
+                <span class="badge badge-green">Approved</span>
+                <span class="badge badge-yellow">Pending</span>
+              </td>
+              <td>Jun 14, 2026</td>
+              <td>2 days ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="project-name">Pine Tree Plaza — Tenant Buildout</div>
+                <div class="project-sub">1201 Pine Tree Ln, Atlanta, GA</div>
+              </td>
+              <td>2</td>
+              <td>Fulton County</td>
+              <td>
+                <span class="badge badge-red">Blocked</span>
+                <span class="badge badge-blue">Doc needed</span>
+              </td>
+              <td>Jul 02, 2026</td>
+              <td>5 hours ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="project-name">Liberty Square — Signage Update</div>
+                <div class="project-sub">404 Liberty Blvd, Tampa, FL</div>
+              </td>
+              <td>1</td>
+              <td>City of Tampa</td>
+              <td><span class="badge badge-yellow">Pending review</span></td>
+              <td>Jun 28, 2026</td>
+              <td>Yesterday</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="project-name">Brookhaven Commons</div>
+                <div class="project-sub">2050 Dresden Dr, Brookhaven, GA</div>
+              </td>
+              <td>4</td>
+              <td>DeKalb County</td>
+              <td>
+                <span class="badge badge-green">Approved</span>
+                <span class="badge badge-green">Approved</span>
+              </td>
+              <td>Jun 09, 2026</td>
+              <td>3 days ago</td>
+            </tr>
+            <tr>
+              <td>
+                <div class="project-name">Westbridge Village MEP</div>
+                <div class="project-sub">980 Westbridge Pkwy, Charlotte, NC</div>
+              </td>
+              <td>2</td>
+              <td>Mecklenburg County</td>
+              <td>
+                <span class="badge badge-blue">Doc needed</span>
+                <span class="badge badge-yellow">Pending</span>
+              </td>
+              <td>Jul 18, 2026</td>
+              <td>1 week ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callouts">
+        <div class="callout">
+          <div class="callout-letter">A</div>
+          <div class="callout-text"><strong>Filter cards</strong>Quickly scope the project list by status. Counts update live as projects move through the workflow.</div>
+        </div>
+        <div class="callout">
+          <div class="callout-letter">B</div>
+          <div class="callout-text"><strong>Apps & AHJ</strong>"Apps" shows how many permit applications are tied to the project. "AHJ" is the Authority Having Jurisdiction.</div>
+        </div>
+        <div class="callout">
+          <div class="callout-letter">C</div>
+          <div class="callout-text"><strong>Status badges</strong>Red = blocked, yellow = pending, blue = doc needed, green = approved. One badge per application on the project.</div>
+        </div>
+        <div class="callout">
+          <div class="callout-letter">D</div>
+          <div class="callout-text"><strong>ECD & Updated</strong>ECD is the estimated completion date for the permit. "Updated" tells you when anything on the project last changed.</div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 1 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" disabled style="opacity:0.5;">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(2)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 2 — Find your tasks ===== -->
+    <section class="step" data-step="2">
+      <div class="step-eyebrow">Step 2 of 5</div>
+      <h1 class="step-title">Find your tasks</h1>
+      <p class="step-desc">The Tasks view shows everything that needs your attention — across every project. Start your day here.</p>
+
+      <div class="mockup">
+        <div class="mockup-header">
+          <span class="mockup-dot r"></span>
+          <span class="mockup-dot y"></span>
+          <span class="mockup-dot g"></span>
+          <span class="mockup-title">permitflow.com / tasks</span>
+        </div>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Task</th>
+              <th>Project</th>
+              <th>Due date</th>
+              <th>Assignee</th>
+              <th>Updated</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><div class="status-cell"><span class="status-icon"></span>Not started</div></td>
+              <td>Upload signed site plan</td>
+              <td>Cypress Shopping Center</td>
+              <td>May 26, 2026</td>
+              <td><span class="avatar">ES</span> You</td>
+              <td>Today</td>
+            </tr>
+            <tr class="blocked-row">
+              <td><div class="status-cell"><span class="status-icon blocked"></span>Blocked</div></td>
+              <td>Submit zoning verification letter</td>
+              <td>Pine Tree Plaza — Tenant Buildout</td>
+              <td>May 24, 2026</td>
+              <td><span class="avatar">ES</span> You</td>
+              <td>5 hours ago</td>
+            </tr>
+            <tr>
+              <td><div class="status-cell"><span class="status-icon"></span>Not started</div></td>
+              <td>Pay permit application fee</td>
+              <td>Liberty Square — Signage Update</td>
+              <td>May 29, 2026</td>
+              <td><span class="avatar alt">JT</span> J. Tran</td>
+              <td>Yesterday</td>
+            </tr>
+            <tr class="blocked-row">
+              <td><div class="status-cell"><span class="status-icon blocked"></span>Blocked</div></td>
+              <td>Provide updated MEP drawings</td>
+              <td>Westbridge Village MEP</td>
+              <td>May 30, 2026</td>
+              <td><span class="avatar">ES</span> You</td>
+              <td>2 days ago</td>
+            </tr>
+            <tr>
+              <td><div class="status-cell"><span class="status-icon"></span>Not started</div></td>
+              <td>Review correction comments from AHJ</td>
+              <td>Brookhaven Commons</td>
+              <td>Jun 02, 2026</td>
+              <td><span class="avatar">ES</span> You</td>
+              <td>3 days ago</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="workflow-box">
+        <strong>Daily workflow:</strong> Start each morning on the Tasks view. <strong>Blocked rows</strong> (pink background) are waiting on you and should be cleared first — they're holding up an application. After that, work through <strong>Not started</strong> tasks in order of due date.
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 2 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(1)">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(3)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 3 — Open a task ===== -->
+    <section class="step" data-step="3">
+      <div class="step-eyebrow">Step 3 of 5</div>
+      <h1 class="step-title">Open a task</h1>
+      <p class="step-desc">Clicking a task opens its detail panel. Everything you need — context, requirements, files, and conversation — lives in one place.</p>
+
+      <div class="mockup">
+        <div class="mockup-header">
+          <span class="mockup-dot r"></span>
+          <span class="mockup-dot y"></span>
+          <span class="mockup-dot g"></span>
+          <span class="mockup-title">permitflow.com / tasks / upload-site-plan</span>
+        </div>
+
+        <div class="breadcrumb">
+          <a href="#">Projects</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="#">Cypress Shopping Center</a>
+          <span class="breadcrumb-sep">/</span>
+          <a href="#">Tasks</a>
+          <span class="breadcrumb-sep">/</span>
+          <span>Upload signed site plan</span>
+        </div>
+
+        <div class="task-detail-header">
+          <h2>Upload signed site plan</h2>
+          <div class="task-meta">
+            <div class="task-meta-item">
+              <div class="task-meta-label">Status</div>
+              <div class="task-meta-value"><span class="badge badge-yellow">Not started</span></div>
+            </div>
+            <div class="task-meta-item">
+              <div class="task-meta-label">Assignees</div>
+              <div class="task-meta-value"><span class="avatar">ES</span>Eric Strauchen</div>
+            </div>
+            <div class="task-meta-item">
+              <div class="task-meta-label">Due date</div>
+              <div class="task-meta-value">May 26, 2026</div>
+            </div>
+            <div class="task-meta-item">
+              <div class="task-meta-label">Project</div>
+              <div class="task-meta-value">Cypress Shopping Center</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="task-section">
+          <h3>What we need from you</h3>
+          <p style="font-size:13.5px;color:var(--gray-600);margin:0 0 8px 0;">Please upload the following documents to keep this application moving:</p>
+          <ul class="task-doc-list">
+            <li>Signed and sealed site plan (PDF, latest revision)</li>
+            <li>Survey showing setbacks and easements</li>
+            <li>Owner authorization letter (signed)</li>
+            <li>Updated parking calculations (if applicable)</li>
+          </ul>
+        </div>
+
+        <div style="margin-top: 20px; display:flex; align-items:center; gap:12px;">
+          <button class="btn btn-primary" id="complete-btn-3" onclick="markComplete(3)">✓ Mark as complete</button>
+          <span class="success-msg" id="success-3">✓ Task marked as complete. Application status will update shortly.</span>
+        </div>
+      </div>
+
+      <div class="messages">
+        <div class="messages-header">💬 Messages</div>
+        <div class="message">
+          <div class="msg-avatar alt">MR</div>
+          <div class="msg-body">
+            <span class="msg-name">Maria Rodriguez (PermitFlow)</span>
+            <span class="msg-time">Yesterday, 4:12 PM</span>
+            <div class="msg-text">Hi Eric — we pulled the latest from Houston and they're asking for a sealed site plan before we can resubmit. Let me know if you need the surveyor's contact.</div>
+          </div>
+        </div>
+        <div class="message">
+          <div class="msg-avatar">ES</div>
+          <div class="msg-body">
+            <span class="msg-name">Eric Strauchen</span>
+            <span class="msg-time">Today, 9:04 AM</span>
+            <div class="msg-text">Thanks Maria — I have it from the architect. Uploading now.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 3 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(2)">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(4)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 4 — Messages panel ===== -->
+    <section class="step" data-step="4">
+      <div class="step-eyebrow">Step 4 of 5</div>
+      <h1 class="step-title">Messages panel</h1>
+      <p class="step-desc">Every task has its own conversation thread with your PermitFlow expediter. Use it to ask questions, share updates, and keep history in one place.</p>
+
+      <div class="split">
+        <div class="panel">
+          <div class="panel-title">Task detail</div>
+          <h2 style="margin:0 0 10px 0; font-size:18px; color:var(--gray-900);">Submit zoning verification letter</h2>
+          <div style="margin-bottom:12px;">
+            <span class="badge badge-red">Blocked</span>
+          </div>
+          <div style="font-size:13px; color:var(--gray-600); margin-bottom:8px;"><strong style="color:var(--gray-700);">Project:</strong> Pine Tree Plaza</div>
+          <div style="font-size:13px; color:var(--gray-600); margin-bottom:8px;"><strong style="color:var(--gray-700);">Due:</strong> May 24, 2026</div>
+          <div style="font-size:13px; color:var(--gray-600); margin-bottom:14px;"><strong style="color:var(--gray-700);">Assignee:</strong> <span class="avatar">ES</span> You</div>
+          <h3 style="font-size:13px; color:var(--gray-700); margin:14px 0 6px;">Description</h3>
+          <p style="font-size:13.5px; color:var(--gray-600); margin:0;">Fulton County is requiring a current zoning verification letter signed by the planning department before reviewing the buildout application.</p>
+        </div>
+
+        <div class="panel">
+          <div class="panel-title">💬 Messages</div>
+          <div class="message">
+            <div class="msg-avatar alt">DK</div>
+            <div class="msg-body">
+              <span class="msg-name">David Kim (PermitFlow)</span>
+              <span class="msg-time">2 days ago</span>
+              <div class="msg-text">Eric — the county won't take the buildout app without the zoning letter. Can your team request one from Fulton planning?</div>
+            </div>
+          </div>
+          <div class="message">
+            <div class="msg-avatar">ES</div>
+            <div class="msg-body">
+              <span class="msg-name">Eric Strauchen</span>
+              <span class="msg-time">Yesterday</span>
+              <div class="msg-text">Requested it this morning — they said 5–7 business days. I'll forward when I get it.</div>
+            </div>
+          </div>
+          <div class="message">
+            <div class="msg-avatar alt">DK</div>
+            <div class="msg-body">
+              <span class="msg-name">David Kim (PermitFlow)</span>
+              <span class="msg-time">5 hours ago</span>
+              <div class="msg-text">Perfect, thanks. I'll keep the app on hold and resubmit the moment it lands.</div>
+            </div>
+          </div>
+          <div class="msg-input-row">
+            <input type="text" class="msg-input" id="msg-input-4" placeholder="Write a message..." />
+            <button class="btn btn-primary" onclick="sendMessage(4)">Send</button>
+          </div>
+          <div style="margin-top:10px;">
+            <span class="success-msg" id="sent-4">✓ Sent!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 4 of 5</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(3)">← Previous</button>
+          <button class="btn btn-primary" onclick="goToStep(5)">Next →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== STEP 5 — Mark tasks complete ===== -->
+    <section class="step" data-step="5">
+      <div class="step-eyebrow">Step 5 of 5</div>
+      <h1 class="step-title">Mark tasks complete</h1>
+      <p class="step-desc">Once you've uploaded everything a task requires, mark it complete. PermitFlow's team will pick it up and move the application forward.</p>
+
+      <div class="mockup">
+        <div class="mockup-header">
+          <span class="mockup-dot r"></span>
+          <span class="mockup-dot y"></span>
+          <span class="mockup-dot g"></span>
+          <span class="mockup-title">permitflow.com / tasks / upload-site-plan</span>
+        </div>
+
+        <h3 style="font-size:14px; color:var(--gray-700); margin:0 0 10px; font-weight:600;">Uploaded documents</h3>
+        <ul class="checklist">
+          <li><span class="check-icon"></span> site-plan-rev3-sealed.pdf <span style="color:var(--gray-400); font-size:12px; margin-left:auto;">2.4 MB</span></li>
+          <li><span class="check-icon"></span> survey-2026-04.pdf <span style="color:var(--gray-400); font-size:12px; margin-left:auto;">1.1 MB</span></li>
+          <li><span class="check-icon"></span> owner-auth-signed.pdf <span style="color:var(--gray-400); font-size:12px; margin-left:auto;">320 KB</span></li>
+          <li><span class="check-icon"></span> parking-calc-update.pdf <span style="color:var(--gray-400); font-size:12px; margin-left:auto;">180 KB</span></li>
+        </ul>
+
+        <div style="display:flex; align-items:center; gap:12px;">
+          <button class="btn btn-primary" id="complete-btn-5" onclick="markComplete(5)">✓ Mark as complete</button>
+          <span class="success-msg" id="success-5">✓ Task complete. Your expediter has been notified.</span>
+        </div>
+
+        <h3 style="font-size:14px; color:var(--gray-700); margin:26px 0 8px; font-weight:600;">What happens next</h3>
+        <div class="flow">
+          <div class="flow-step done">Submitted</div>
+          <span class="flow-arrow">›</span>
+          <div class="flow-step current">Under review</div>
+          <span class="flow-arrow">›</span>
+          <div class="flow-step">Corrections</div>
+          <span class="flow-arrow">›</span>
+          <div class="flow-step">Approved</div>
+          <span class="flow-arrow">›</span>
+          <div class="flow-step">Issued</div>
+        </div>
+        <p style="font-size:13px; color:var(--gray-500); margin:0;">Your application is now with the AHJ. We'll ping you in Messages the moment they respond — whether that's an approval or a request for corrections.</p>
+      </div>
+
+      <div class="help-box">
+        <div class="help-icon">?</div>
+        <div>
+          <h4>Need a hand?</h4>
+          <p>Your dedicated expediter and the PermitFlow team are one click away. Email <a href="mailto:support@permitflow.com">support@permitflow.com</a> any time — we typically respond within an hour during business hours.</p>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <span class="step-counter">Step 5 of 5 — You're done! 🎉</span>
+        <div class="right">
+          <button class="btn btn-secondary" onclick="goToStep(4)">← Previous</button>
+          <button class="btn btn-ghost" onclick="restartGuide()">↺ Restart guide</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+  const TOTAL_STEPS = 5;
+  let currentStep = 1;
+
+  function goToStep(n) {
+    if (n < 1 || n > TOTAL_STEPS) return;
+    currentStep = n;
+    render();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function render() {
+    // Show active step content
+    document.querySelectorAll('.step').forEach(el => {
+      el.classList.toggle('active', Number(el.dataset.step) === currentStep);
+    });
+    // Sidebar items
+    document.querySelectorAll('.step-item').forEach(el => {
+      const s = Number(el.dataset.step);
+      el.classList.toggle('active', s === currentStep);
+      el.classList.toggle('completed', s < currentStep);
+    });
+    // Progress
+    const pct = Math.round(((currentStep - 1) / (TOTAL_STEPS - 1)) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-pct').textContent = pct + '%';
+  }
+
+  function markComplete(stepNum) {
+    const btn = document.getElementById('complete-btn-' + stepNum);
+    const msg = document.getElementById('success-' + stepNum);
+    if (!btn || !msg) return;
+    btn.disabled = true;
+    btn.textContent = '✓ Completed';
+    msg.classList.add('show');
+  }
+
+  function sendMessage(stepNum) {
+    const input = document.getElementById('msg-input-' + stepNum);
+    const msg = document.getElementById('sent-' + stepNum);
+    if (input) input.value = '';
+    if (msg) {
+      msg.classList.add('show');
+      setTimeout(() => msg.classList.remove('show'), 2500);
+    }
+  }
+
+  function restartGuide() {
+    // Reset interactive elements
+    [3, 5].forEach(s => {
+      const btn = document.getElementById('complete-btn-' + s);
+      const msg = document.getElementById('success-' + s);
+      if (btn) { btn.disabled = false; btn.textContent = '✓ Mark as complete'; }
+      if (msg) msg.classList.remove('show');
+    });
+    const sent4 = document.getElementById('sent-4');
+    if (sent4) sent4.classList.remove('show');
+    goToStep(1);
+  }
+
+  // Sidebar click → jump to step
+  document.querySelectorAll('.step-item').forEach(el => {
+    el.addEventListener('click', () => goToStep(Number(el.dataset.step)));
+  });
+
+  // Allow Enter key to send message
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'msg-input-4') {
+      sendMessage(4);
+    }
+  });
+
+  // Initial render
+  render();
+</script>
+</body>
+</html>
